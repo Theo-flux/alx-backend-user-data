@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """filtered logger module"""
+from os import environ
 import logging
 from typing import List, Tuple, Union
 import re
+import mysql.connector
 
 
 PII_FIELDS: Tuple[str, ...] = ("name", "email", "phone", "ssn", "password")
@@ -88,3 +90,18 @@ def get_logger() -> logging.Logger:
     user_data_logger.addHandler(stream_handler)
 
     return user_data_logger
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """starts a db connection"""
+    user = environ.get('PERSONAL_DATA_DB_USERNAME', 'root')
+    password = environ.get('PERSONAL_DATA_DB_PASSWORD', '')
+    host = environ.get('PERSONAL_DATA_DB_HOST', 'localhost')
+    database = environ.get('PERSONAL_DATA_DB_DATABASE', 'holberton')
+
+    return mysql.connector.connection.MySQLConnection(
+        user=user,
+        password=password,
+        host=host,
+        database=database
+    )
