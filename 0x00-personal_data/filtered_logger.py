@@ -105,3 +105,16 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         host=host,
         database=database
     )
+
+
+
+def main() -> None:
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('SELECT * FROM users;')
+
+    cursor.close()
+    db.close()
+
+if __name__ == '__main__':
+    main()
