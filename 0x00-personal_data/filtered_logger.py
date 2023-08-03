@@ -69,6 +69,7 @@ def get_logger() -> logging.Logger:
     # creating logger object
     user_data_logger = logging.getLogger('user_data')
     user_data_logger.setLevel(logging.INFO)
+    user_data_logger.propagate = False
 
     # creating stream handler to be logged on console
     stream_handler = logging.StreamHandler()
