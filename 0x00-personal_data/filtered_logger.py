@@ -52,5 +52,5 @@ class RedactingFormatter(logging.Formatter):
         Returns:
             str: _description_
         """
-        msg = super().format(record)
+        msg = super(RedactingFormatter, self).format(record)
         return filter_datum(self.fields, self.REDACTION, msg, self.SEPARATOR)
