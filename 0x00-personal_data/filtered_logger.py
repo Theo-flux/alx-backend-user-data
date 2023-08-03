@@ -67,7 +67,8 @@ def get_logger() -> logging.Logger:
     """returns logging.Logger object"""
 
     # creating logger object
-    user_data_logger = logging.Logger('user_data', level=logging.INFO)
+    user_data_logger = logging.getLogger('user_data')
+    user_data_logger.setLevel(logging.INFO)
 
     # creating stream handler to be logged on console
     stream_handler = logging.StreamHandler()
