@@ -107,7 +107,6 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     )
 
 
-
 def main() -> None:
     db = get_db()
     cursor = db.cursor()
@@ -117,10 +116,11 @@ def main() -> None:
     fields = cursor.column_names
 
     for row in cursor:
-        row = 
+        row = "".join("{}={}; ".format(k, v) for k, v in zip(fields, row))
         logger.info(row)
     cursor.close()
     db.close()
+
 
 if __name__ == '__main__':
     main()
