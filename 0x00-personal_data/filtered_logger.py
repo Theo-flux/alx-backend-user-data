@@ -117,7 +117,7 @@ def main() -> None:
 
     for row in cursor:
         row = "".join("{}={}; ".format(k, v) for k, v in zip(fields, row))
-        logger.info(row)
+        logger.info(row.strip())
     cursor.close()
     db.close()
 
