@@ -114,8 +114,10 @@ def main() -> None:
     cursor.execute('SELECT * FROM users;')
 
     logger = get_logger()
+    fields = cursor.column_names
 
     for row in cursor:
+        row = 
         logger.info(row)
     cursor.close()
     db.close()
