@@ -113,6 +113,10 @@ def main() -> None:
     cursor = db.cursor()
     cursor.execute('SELECT * FROM users;')
 
+    logger = get_logger()
+
+    for row in cursor:
+        logger.info(row)
     cursor.close()
     db.close()
 
