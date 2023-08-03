@@ -25,6 +25,6 @@ def filter_datum(
     """
     for field in fields:
         message = re.sub(
-            r'(?<={}=)[^{}]+'.format(field, separator),
+            '(?<={}=)[^{}]+'.format(field, separator),
             '{}={}'.format(field, redaction), message)
     return message
