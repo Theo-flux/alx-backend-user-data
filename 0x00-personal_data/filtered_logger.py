@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """filtered logger module"""
 import logging
-from typing import List, Tuple
+from typing import List, Tuple, Union
 import re
 
 
+PII_FIELDS: Tuple[str, ...] = ("name", "email", "phone", "ssn", "password")
+
+
 def filter_datum(
-    fields: List[str],
+    fields: Union[List[str], Tuple[str], Tuple[str, ...]],
     redaction: str,
     message: str,
     separator: str
@@ -15,7 +18,8 @@ def filter_datum(
     function to filter user datum/data
 
     Args:
-        fields (List[str]): a list of fields to obfuscate
+        fields (Union[List[str], Tuple[str]]):
+            a list of fields to obfuscate
         redaction (str): obfuscating string
         message (str): the log line
         separator (str): the character separating all fields in
@@ -38,7 +42,7 @@ class RedactingFormatter(logging.Formatter):
     FORMAT = "[HOLBERTON] %(name)s %(levelname)s %(asctime)-15s: %(message)s"
     SEPARATOR = ";"
 
-    def __init__(self, fields: List[str]):
+    def __init__(self, fields: Union[Tuple[str, ...], Tuple[str, ...]]):
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
@@ -57,3 +61,24 @@ class RedactingFormatter(logging.Formatter):
             self.fields, self.REDACTION,
             message, self.SEPARATOR
         )
+
+
+def get_logger() -> logging.Logger:
+    """returns logging.Logger object"""
+
+    # creating logger object
+    user_data_logger = logging.Logger('user_data', level=logging.INFO)
+
+    # creating stream handler to be logged on console
+    stream_handler = logging.StreamHandler()
+
+    # configuring a formatter
+    formatter = logging.Formatter(RedactingFormatter(PII_FIELDS).FORMAT)
+
+    # setting a formatter to the stream_handler
+    stream_handler.setFormatter(formatter)
+
+    # adding the streamhandler to the logger
+    user_data_logger.addHandler(stream_handler)
+
+    return user_data_logger
