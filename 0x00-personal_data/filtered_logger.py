@@ -44,6 +44,7 @@ class RedactingFormatter(logging.Formatter):
     SEPARATOR = ";"
 
     def __init__(self, fields: Union[Tuple[str, ...], Tuple[str, ...]]):
+        """initializing"""
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
@@ -80,7 +81,7 @@ def get_logger() -> logging.Logger:
     stream_handler = logging.StreamHandler()
 
     # configuring a formatter
-    formatter = logging.Formatter(RedactingFormatter(PII_FIELDS).FORMAT)
+    formatter = RedactingFormatter(PII_FIELDS)
 
     # setting a formatter to the stream_handler
     stream_handler.setFormatter(formatter)
