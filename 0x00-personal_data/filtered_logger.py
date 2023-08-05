@@ -115,6 +115,7 @@ def main() -> None:
 
     logger = get_logger()
     fields = cursor.column_names
+    print(fields)
 
     for row in cursor:
         row = "".join("{}={}; ".format(k, v) for k, v in zip(fields, row))
