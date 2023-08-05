@@ -31,7 +31,7 @@ def filter_datum(
         str: string with obfuscated fields
     """
     for field in fields:
-        message = re.sub(f'(?<={field}=)[^{separator}]+',
+        message = re.sub(f'{field}=.*?{separator}',
             f'{field}={redaction}', message)
     return message
 
