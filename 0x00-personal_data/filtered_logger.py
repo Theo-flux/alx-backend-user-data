@@ -31,9 +31,8 @@ def filter_datum(
         str: string with obfuscated fields
     """
     for field in fields:
-        message = re.sub(
-            r'(?<={}=)[^{}]+'.format(field, separator),
-            '{}={}'.format(field, redaction), message)
+        message = re.sub(f'(?<={field}=)[^{separator}]+',
+            f'{field}={redaction}', message)
     return message
 
 
@@ -108,6 +107,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
 
 
 def main() -> None:
+    """main function"""
     db = get_db()
     cursor = db.cursor()
     cursor.execute('SELECT * FROM users;')
