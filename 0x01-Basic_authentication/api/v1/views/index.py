@@ -33,3 +33,12 @@ def unathorized() -> str:
     by using abort - Custom Error Pages
     """
     abort(401)
+
+
+@app_views.route('/forbidden', strict_slashes=False)
+def forbidden() -> str:
+    """
+    This endpoint must raise a 403 error
+    by using abort - Custom Error Pages
+    """
+    abort(403)
