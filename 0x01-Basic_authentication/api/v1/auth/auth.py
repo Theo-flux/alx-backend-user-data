@@ -7,6 +7,7 @@ from typing import TypeVar, List
 class Auth:
     """manage the API authentication."""
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
+        """require auth"""
         return False
 
     def authorization_header(self, request=None) -> str:
