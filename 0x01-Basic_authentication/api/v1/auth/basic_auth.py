@@ -105,11 +105,12 @@ class BasicAuth(Auth):
             return None
 
         if DATA['User']:
-            userInstances = User.search({"email": user_email})
+            res = None
 
-            if userInstances is None or len(userInstances) == 0:
-                return None
-            for userInstance in userInstances:
-                if userInstance.is_valid_password(user_pwd):
-                    return userInstance
+            for _, userInstance in DATA['User'].items():
+                if userInstance.search({"email": user_email}):
+                    if userInstance.is_valid_password(user_pwd):
+                        res = userInstance
+
+            return res
         return None
