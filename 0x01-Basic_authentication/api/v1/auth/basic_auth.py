@@ -113,3 +113,4 @@ class BasicAuth(Auth):
                         res = userInstance
 
             return res
+        return None
