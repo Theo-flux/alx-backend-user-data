@@ -35,9 +35,9 @@ class Auth:
                 if excluded_paths[idx].endswith("/"):
                     excluded_paths[idx] = excluded_paths[idx][:-1]
                 elif excluded_paths[idx].endswith("*"):
-                    last = (excluded_paths[idx].split("/"))[-1]
+                    idx_last_el = (excluded_paths[idx].split("/"))[-1]
                     path_last_el = path.split("/")[-1]
-                    if path_last_el.startswith(last[:-1]):
+                    if path_last_el.startswith(idx_last_el[:-1]):
                         excluded_paths[idx] = path
                 else:
                     continue
