@@ -28,6 +28,11 @@ class Auth:
             for idx in range(len(excluded_paths)):
                 if excluded_paths[idx].endswith("/"):
                     continue
+                elif excluded_paths[idx].endswith("*"):
+                    idx_last_el = (excluded_paths[idx].split("/"))[-1]
+                    path_last_el = path.split("/")[-2]
+                    if path_last_el.startswith(idx_last_el[:-1]):
+                        excluded_paths[idx] = path
                 else:
                     excluded_paths[idx] = f"{excluded_paths[idx]}/"
         else:
