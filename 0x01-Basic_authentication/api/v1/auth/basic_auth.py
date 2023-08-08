@@ -103,7 +103,9 @@ class BasicAuth(Auth):
             not isinstance(user_pwd, str)
         ):
             return None
-        # User.load_from_file()
+        
+        User.load_from_file()
+
         if DATA['User']:
             res = None
 
