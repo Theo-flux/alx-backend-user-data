@@ -34,11 +34,17 @@ def handle_before_req():
         excluded_paths = [
             '/api/v1/status/',
             '/api/v1/unauthorized/',
-            '/api/v1/forbidden/'
+            '/api/v1/forbidden/',
+            '/api/v1/auth_session/login/'
         ]
         req_auth = auth.require_auth(request.path, excluded_paths)
 
         auth_header = auth.authorization_header(request)
+        auth_session = auth.session_cookie(request)
+
+        if auth_header and auth_session is None:
+            abort(401)
+
         auth_user = auth.current_user(request)
 
         request.current_user = auth_user
