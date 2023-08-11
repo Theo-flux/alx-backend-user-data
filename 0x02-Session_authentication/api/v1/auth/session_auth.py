@@ -3,6 +3,7 @@
 from api.v1.auth.auth import Auth
 from models.user import User
 
+from os import getenv
 from uuid import uuid4
 
 
@@ -53,3 +54,24 @@ class SessionAuth(Auth):
         user_id = self.user_id_for_session_id(req_session_cookie)
 
         return User.get(user_id)
+
+    def destroy_session(self, request=None):
+        """
+        instance method to destroy session id
+
+        Args:
+            request (_type_, optional): _description_. Defaults to None.
+        """
+        if request is None:
+            return None
+
+        session_id = self.session_cookie(request)
+
+        if not session_id:
+            return False
+        else:
+            if not self.user_id_for_session_id(session_id):
+                return False
+            else:
+                del self.user_id_by_session_id[session_id]
+                return True

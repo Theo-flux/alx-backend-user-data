@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Module for session auth views"""
-from flask import request, jsonify
+from flask import request, jsonify, abort
 from api.v1.views import app_views
 from models.user import User
 
@@ -10,7 +10,7 @@ from os import getenv
 
 @app_views.route("/auth_session/login", methods=['POST'], strict_slashes=False)
 def session_login():
-    """session login authentication view"""
+    """session login authentication route"""
     email = request.form.get('email')
     password = request.form.get('password')
 
@@ -42,3 +42,18 @@ def session_login():
                 return response
 
     return jsonify({'email': email, 'password': password})
+
+
+@app_views.route(
+    '/auth_session/logout',
+    methods=['DELETE'],
+    strict_slashes=False
+)
+def session_logout():
+    """session logout route"""
+    from api.v1.app import auth
+
+    if not auth.destroy_session(request):
+        abort(404)
+
+    return jsonify({}), 200
