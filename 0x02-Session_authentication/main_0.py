@@ -6,8 +6,8 @@ from api.v1.auth.basic_auth import BasicAuth
 from models.user import User
 
 """ Create a user test """
-user_email = "bob@hbtn.io"
-user_clear_pwd = "H0lbertonSchool98!"
+user_email = "bobsession@hbtn.io"
+user_clear_pwd = "test_2"
 
 user = User()
 user.email = user_email
