@@ -42,8 +42,6 @@ def handle_before_req():
         auth_header = auth.authorization_header(request)
         auth_session = auth.session_cookie(request)
 
-        
-
         auth_user = auth.current_user(request)
         request.current_user = auth.current_user(request)
 
