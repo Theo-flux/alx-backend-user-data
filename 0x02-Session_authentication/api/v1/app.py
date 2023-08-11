@@ -42,13 +42,14 @@ def handle_before_req():
         auth_header = auth.authorization_header(request)
         auth_session = auth.session_cookie(request)
 
-        # if auth_header and auth_session is None:
-        #     abort(401)
+        
 
         auth_user = auth.current_user(request)
         request.current_user = auth.current_user(request)
 
         if req_auth:
+            # if auth_header and auth_session is None:
+            #     abort(401)
             if auth_header is None:
                 abort(401)
             if auth_user is None:
