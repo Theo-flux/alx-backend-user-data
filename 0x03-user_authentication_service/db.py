@@ -51,8 +51,20 @@ class DB:
 
         return added_user
 
-    def find_user_by(self, **kwargs):
-        """get user """
+    def find_user_by(
+        self,
+        **kwargs
+    ) -> Union[User, InvalidRequestError, NoResultFound]:
+        """
+        find user by attribute
+
+        Raises:
+            InvalidRequestError: _description_
+            NoResultFound: _description_
+
+        Returns:
+            Union[User, InvalidRequestError, NoResultFound]: _description_
+        """
         all_users = self._session.query(User)
 
         for k, v in kwargs.items():
