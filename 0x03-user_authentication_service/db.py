@@ -44,8 +44,9 @@ class DB:
         """
         if email and hashed_password:
             added_user = User(email=email, hashed_password=hashed_password)
-            
+
             my_session = self._session
             my_session.add(added_user)
             my_session.commit()
+
             return added_user
