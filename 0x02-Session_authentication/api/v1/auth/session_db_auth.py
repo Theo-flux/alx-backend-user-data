@@ -36,6 +36,7 @@ class SessionDBAuth(SessionExpAuth):
         return session_list[0].user_id
 
     def destroy_session(self, request=None):
+        """destroy session id"""
         session_id = self.session_cookie(request)
         try:
             session_list = UserSession.search({'session_id': session_id})
