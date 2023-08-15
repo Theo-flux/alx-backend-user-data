@@ -15,11 +15,11 @@ from user import Base, User
 class DB:
     """DB class
     """
-
     def __init__(self) -> None:
         """Initialize a new DB instance
         """
-        self._engine = create_engine("sqlite:///a.db", echo=True)
+        self._engine = create_engine("sqlite:///a.db",
+                                     echo=False)
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
         self.__session = None
@@ -76,3 +76,22 @@ class DB:
                     return user
 
         raise NoResultFound
+
+    def update_user(self, user_id: int, **kwargs) -> None:
+        """
+        update user by id
+
+        Args:
+            user_id (int): _description_
+        """
+        try:
+            user = self.find_user_by(id=user_id)
+        except NoResultFound:
+            raise ValueError
+
+        for k, v in kwargs.items():
+            if k not in User.__dict__:
+                raise ValueError
+            setattr(user, k, v)
+
+        self._session.commit()
