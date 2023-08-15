@@ -12,12 +12,14 @@ class SessionDBAuth(SessionExpAuth):
     def create_session(self, user_id=None):
         """create session id"""
         session_id = super().create_session(user_id)
-
-        if session_id is None:
-            return None
-
-        UserSession(user_id=user_id, session_id=session_id).save()
-        return session_id
+        if type(session_id) == str:
+            kwargs = {
+                'user_id': user_id,
+                'session_id': session_id,
+            }
+            user_session = UserSession(**kwargs)
+            user_session.save()
+            return session_id
 
     def user_id_for_session_id(self, session_id=None):
         """get user id by session id"""
