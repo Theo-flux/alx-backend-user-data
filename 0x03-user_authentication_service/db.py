@@ -31,7 +31,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_password: str) -> Union[User, None]:
+    def add_user(self, email: str, hashed_password: str) -> User:
         """
         method to add user to database
 
@@ -42,11 +42,9 @@ class DB:
         Returns:
             User: _description_
         """
-        if email and hashed_password:
-            added_user = User(email=email, hashed_password=hashed_password)
+        added_user = User(email=email, hashed_password=hashed_password)
 
-            my_session = self._session
-            my_session.add(added_user)
-            my_session.commit()
+        self._session.add(added_user)
+        self._session.commit()
 
-            return added_user
+        return added_user
