@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """DB module
 """
+from typing import Union
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
-from typing import Union
+from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.orm.exc import NoResultFound
 
 from user import Base, User
 
@@ -48,3 +50,17 @@ class DB:
         self._session.commit()
 
         return added_user
+
+    def find_user_by(self, **kwargs):
+        """get user """
+        all_users = self._session.query(User)
+
+        for k, v in kwargs.items():
+            if k not in User.__dict__:
+                raise InvalidRequestError
+
+            for user in all_users:
+                if getattr(user, k) == v:
+                    return user
+
+        raise NoResultFound
