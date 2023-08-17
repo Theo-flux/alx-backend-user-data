@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 """basic flask app module"""
-from flask import Flask, jsonify, request, abort
+from flask import (
+  Flask,
+  jsonify,
+  request,
+  abort,
+  redirect
+)
 from sqlalchemy.orm.exc import NoResultFound
 
 from auth import Auth
@@ -45,7 +51,7 @@ def login():
       - password
     Return:
       - User object JSON represented
-      - 400 if can't create the new User
+      - 401 if can't create the new User
     """
     mail = request.form['email']
     pwd = request.form['password']
@@ -57,6 +63,25 @@ def login():
         res.set_cookie("session_id", session_id)
         return res
     return abort(401, description="unautheorized user")
+
+
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout():
+    """ DELETE /api/v1/users/:id
+    Path parameter:
+      - User ID
+    Return:
+      - empty JSON is the User has been correctly deleted
+      - 403 if the User ID doesn't exist
+    """
+    session_id = request.cookies.get('session_id')
+    user = db.find_user_by(session_id=session_id)
+
+    if user is None:
+      return abort(403)
+    
+    AUTH.destroy_session(getattr(user, 'id'))
+    return redirect('/')
 
 
 if __name__ == "__main__":
