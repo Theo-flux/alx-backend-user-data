@@ -56,7 +56,7 @@ def login():
         res = jsonify({"email": f"{mail}", "message": "user created"})
         res.set_cookie("session_id", session_id)
         return res
-    return abort(401)
+    return abort(401, description="unautheorized user")
 
 
 if __name__ == "__main__":
