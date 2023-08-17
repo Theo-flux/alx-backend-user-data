@@ -1,4 +1,4 @@
-#!/usr/env/bin python3
+#!/usr/bin/env python3
 """basic flask app module"""
 from flask import Flask, jsonify
 
