@@ -4,6 +4,7 @@ import bcrypt
 from uuid import uuid4
 
 from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import InvalidRequestError
 from db import DB
 from user import User
 
@@ -95,7 +96,7 @@ class Auth:
             return None
         else:
             session_id = _generate_uuid()
-            setattr(user, 'session_id', session_id)
+            self._db.update_user(user.id, session_id=session_id)
             return session_id
 
     def get_user_from_session_id(self, session_id: str) -> User:
@@ -110,9 +111,10 @@ class Auth:
         """
         if session_id is None:
             return None
+
         try:
             user = self._db.find_user_by(session_id=session_id)
-        except NoResultFound:
+        except (NoResultFound, InvalidRequestError) as e:
             return None
         else:
             return user
@@ -129,7 +131,7 @@ class Auth:
         """
         try:
             user = self._db.find_user_by(id=user_id)
-        except NoResultFound:
+        except Exception:
             return None
         else:
             self._db.update_user(user_id, session_id=None)

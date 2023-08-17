@@ -59,26 +59,24 @@ def login():
     flag = AUTH.valid_login(email=mail, password=pwd)
     if flag:
         session_id = AUTH.create_session(mail)
-        res = jsonify({"email": f"{mail}", "message": "user created"})
+        res = jsonify({"email": f"{mail}", "message": "logged in"})
         res.set_cookie("session_id", session_id)
         return res
-    return abort(401, description="unautheorized user")
+    return abort(401, description="unauthorized")
 
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
 def logout():
     """ DELETE /api/v1/users/:id
-    Path parameter:
-      - User ID
     Return:
-      - empty JSON is the User has been correctly deleted
+      - redirects to home route
       - 403 if the User ID doesn't exist
     """
-    session_id = request.cookies.get('session_id')
-    user = db.find_user_by(session_id=session_id)
+    session_id = request.cookies.get('session_id', None)
+    user = AUTH.get_user_from_session_id(session_id)
 
-    if user is None:
-      return abort(403)
+    if session_id is None or user is None:
+      return abort(403, description='Forbidden')
     
     AUTH.destroy_session(getattr(user, 'id'))
     return redirect('/')
