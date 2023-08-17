@@ -32,8 +32,8 @@ def create_user():
       - User object JSON represented
       - 400 if can't create the new User
     """
-    mail = request.form['email']
-    pwd = request.form['password']
+    mail = request.form.get('email')
+    pwd = request.form.get('password')
 
     try:
         AUTH.register_user(mail, pwd)
@@ -96,6 +96,26 @@ def profile():
         return abort(403, description='Forbidden')
 
     return jsonify({"email": f"{getattr(user, 'email')}"})
+
+
+@app.route('/reset_password', methods=['POST'], strict_slashes=False)
+def get_reset_password_token():
+    """ POST /reset_password
+    JSON body:
+      - email
+    Return:
+      - JSON object
+      - 403 if can't get the User
+    """
+    mail = request.form.get('email')
+    try:
+        reset_token = AUTH.get_reset_password_token(mail)
+    except ValueError:
+        return abort(403)
+    else:
+        return jsonify(
+            {"email": f"{mail}", "reset_token": f"{reset_token}"}
+        ), 200
 
 
 if __name__ == "__main__":
