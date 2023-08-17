@@ -104,7 +104,7 @@ def get_reset_password_token():
     JSON body:
       - email
     Return:
-      - JSON object
+      - 200 JSON object
       - 403 if can't get the User
     """
     mail = request.form.get('email')
@@ -115,6 +115,31 @@ def get_reset_password_token():
     else:
         return jsonify(
             {"email": f"{mail}", "reset_token": f"{reset_token}"}
+        ), 200
+
+
+@app.route('/reset_password', methods=['PUT'], strict_slashes=False)
+def update_password():
+    """ PUT /reset_password
+    JSON body:
+      - email
+      - new_password
+      - reset_token
+    Return:
+      - 200 JSON object
+      - 403 if can't get the User
+    """
+    mail = request.form.get('email')
+    new_pwd = request.form.get('new_password')
+    reset_token = request.form.get('reset_token')
+
+    try:
+        AUTH.update_password(reset_token, new_pwd)
+    except ValueError:
+        return abort(403)
+    else:
+        return jsonify(
+            {"email": f"{mail}", "message": "Password updated"}
         ), 200
 
 
