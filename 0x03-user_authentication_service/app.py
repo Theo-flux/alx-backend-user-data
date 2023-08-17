@@ -53,8 +53,8 @@ def login():
       - User object JSON represented
       - 401 if can't create the new User
     """
-    mail = request.form['email']
-    pwd = request.form['password']
+    mail = request.form.get('email')
+    pwd = request.form.get('password')
 
     flag = AUTH.valid_login(email=mail, password=pwd)
     if flag:
