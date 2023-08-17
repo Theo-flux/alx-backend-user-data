@@ -82,5 +82,21 @@ def logout():
     return redirect('/')
 
 
+@app.route('/profile', strict_slashes=False)
+def profile():
+    """ DELETE /api/v1/users/:id
+    Return:
+      - redirects to home route
+      - 403 if the User ID doesn't exist
+    """
+    session_id = request.cookies.get('session_id', None)
+    user = AUTH.get_user_from_session_id(session_id)
+
+    if session_id is None or user is None:
+      return abort(403, description='Forbidden')
+    
+    return jsonify({"email": f"{getattr(user, 'email')}"})
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
