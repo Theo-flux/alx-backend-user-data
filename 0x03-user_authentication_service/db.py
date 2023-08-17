@@ -65,15 +65,15 @@ class DB:
         Returns:
             Union[User, InvalidRequestError, NoResultFound]: _description_
         """
-        all_users = self._session.query(User)
+        all_users = self._session.query(User).all()
 
         for k, v in kwargs.items():
             if k not in User.__dict__:
                 raise InvalidRequestError
-
-            for user in all_users:
-                if getattr(user, k) == v:
-                    return user
+            else:
+                for user in all_users:
+                    if getattr(user, k) == v:
+                        return user
 
         raise NoResultFound
 
