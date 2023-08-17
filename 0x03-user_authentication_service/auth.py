@@ -137,7 +137,7 @@ class Auth:
             self._db.update_user(user_id, session_id=None)
             return None
 
-    def get_reset_password_token(self, email: str):
+    def get_reset_password_token(self, email: str) -> str:
         """
         update user reset_token field
 
@@ -159,3 +159,27 @@ class Auth:
             user_id = getattr(user, 'id')
             self._db.update_user(user_id, reset_token=pwd_token)
             return pwd_token
+
+    def update_password(self, reset_token: str, password: str) -> None:
+        """
+        update password of user with a valid reset_token
+
+        Args:
+            reset_token (str): _description_
+            password (str): _description_
+
+        Raises:
+            ValueError: _description_
+        """
+        try:
+            user = self._db.find_user_by(reset_token=reset_token)
+        except NoResultFound:
+            raise ValueError()
+        else:
+            hashed_pw = _hash_password(password)
+            user_id = getattr(user, 'id')
+            self._db.update_user(
+                user_id,
+                hashed_password=hashed_pw,
+                reset_token=None
+            )
