@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """basic flask app module"""
 from flask import (
-  Flask,
-  jsonify,
-  request,
-  abort,
-  redirect
+    Flask,
+    jsonify,
+    request,
+    abort,
+    redirect
 )
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -76,8 +76,8 @@ def logout():
     user = AUTH.get_user_from_session_id(session_id)
 
     if session_id is None or user is None:
-      return abort(403, description='Forbidden')
-    
+        return abort(403, description='Forbidden')
+
     AUTH.destroy_session(getattr(user, 'id'))
     return redirect('/')
 
@@ -93,8 +93,8 @@ def profile():
     user = AUTH.get_user_from_session_id(session_id)
 
     if session_id is None or user is None:
-      return abort(403, description='Forbidden')
-    
+        return abort(403, description='Forbidden')
+
     return jsonify({"email": f"{getattr(user, 'email')}"})
 
 
