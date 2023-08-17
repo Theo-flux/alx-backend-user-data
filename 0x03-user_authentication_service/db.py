@@ -68,9 +68,10 @@ class DB:
             Union[User, InvalidRequestError, NoResultFound]: _description_
         """
         all_users = self._session.query(User).all()
+        user_keys = User.__dict__.keys()
 
         for k, v in kwargs.items():
-            if k not in User.__dict__:
+            if k not in user_keys:
                 raise InvalidRequestError
             else:
                 for user in all_users:
